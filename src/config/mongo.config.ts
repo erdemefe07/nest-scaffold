@@ -1,6 +1,4 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { config } from 'dotenv'
-config()
 
 export const mongoConfig: TypeOrmModuleOptions = {
     name: 'mongo',

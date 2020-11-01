@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,6 +12,7 @@ import { mongoConfig, postgresConfig } from 'config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot(postgresConfig),
     TypeOrmModule.forRoot(mongoConfig),
     AuthModule,
@@ -21,4 +23,4 @@ import { mongoConfig, postgresConfig } from 'config';
   providers: [AppService],
   exports: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

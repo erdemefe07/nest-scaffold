@@ -4,6 +4,21 @@
 $ npm install
 ```
 
+## .env file example
+```
+mongo_port=27017
+mongo_host=127.0.0.1
+mongo_database=nest-log
+
+psql_port=5432
+psql_host=127.0.0.1
+psql_username=postgres
+psql_password=test123
+psql_database=nest
+
+jwt_secret=secret
+```
+
 ## Running the app
 
 ```bash
