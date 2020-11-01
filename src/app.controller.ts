@@ -1,11 +1,11 @@
 import { Body, Controller, Post, UseFilters } from '@nestjs/common';
-import { LoginDTO } from 'common/dtos';
+import { LoginDTO, RegisterDTO } from 'common/dtos';
 import { UnAutharizedErrorFilter } from 'common/filters/unautharized-error.filter';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Post('/login')
   @UseFilters(UnAutharizedErrorFilter)
@@ -14,7 +14,7 @@ export class AppController {
   }
 
   @Post('/register')
-  register(@Body() body: LoginDTO): Promise<null> {
+  register(@Body() body: RegisterDTO): Promise<null> {
     return this.appService.register(body);
   }
 }

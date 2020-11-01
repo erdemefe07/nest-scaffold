@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDTO } from 'common/dtos';
+import { LoginDTO, RegisterDTO } from 'common/dtos';
 import { User } from 'common/entities/postgres';
 import { InsertResult } from 'typeorm';
 
@@ -16,13 +16,18 @@ export class AuthService {
     return this.jwtService.verify(token);
   }
 
-  createUser(user: LoginDTO): Promise<InsertResult> {
+  createUser(user: RegisterDTO): Promise<InsertResult> {
     return User.insert(user);
   }
 
   async validatePassword(user: LoginDTO): Promise<User> {
-    const kullanici = await User.findOne({ username: user.username }, { select: ['username', 'password'] });
-    if (kullanici.password != user.password) {
+    let kullanici = await User.findOne({ username: user.username }, { select: ['username', 'password'] });
+
+    if (!kullanici) {
+      kullanici = await User.findOne({ email: user.username }, { select: ['username', 'password', 'email'] });
+    }
+    
+    if (!kullanici || kullanici.password != user.password) {
       throw new UnauthorizedException('Kullanıcı adı veya şifre yanlış');
     }
     return kullanici;
