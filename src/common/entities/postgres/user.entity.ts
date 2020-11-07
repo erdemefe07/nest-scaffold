@@ -1,6 +1,14 @@
 import { IsEmail } from 'class-validator';
-import { LoginDTO } from 'common/dtos';
-import { BaseEntity, Check, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  BaseEntity,
+  Check,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('Users')
 @Unique(['username', 'email'])
@@ -15,7 +23,7 @@ export class User extends BaseEntity {
   @Column({ length: 50 })
   username: string;
 
-  @Column({ select: false, length: 50 })
+  @Column({ type: 'char', select: false, length: 60 })
   @Check('check-minlen', 'length(password) >= 6')
   password: string;
 
@@ -23,21 +31,6 @@ export class User extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @CreateDateColumn({ type: 'timestamp', nullable: true })
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt?: Date;
-
-  constructor(user?: LoginDTO) {
-    super();
-
-    /**
-     * Try yapmazsan javascript'e dönüştürünce hata veriyor
-     * Typeorm constructoru olduğu gibi alıyor ama
-     * Field'ların isimlerini dönüştürüyor
-     * Bu yüzden this.username'yi bulamıyor
-     */
-    try {
-      this.username = user.username;
-      this.password = user.password;
-    } catch (error) {}
-  }
 }

@@ -4,6 +4,6 @@ export class LoginDTO {
   @Length(1, 320)
   username: string;
 
-  @Length(6, 50)
+  @Length(6, 60)
   password: string;
 }

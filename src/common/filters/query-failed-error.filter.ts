@@ -5,8 +5,6 @@ import { QueryFailedError } from 'typeorm';
 
 @Catch(QueryFailedError)
 export class QueryFailedErrorFilter implements ExceptionFilter {
-  private logService: LogService;
-
   catch(exception: QueryFailedError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const req = ctx.getRequest<Request>();
@@ -31,9 +29,10 @@ export class QueryFailedErrorFilter implements ExceptionFilter {
 
         return res.status(HttpStatus.CONFLICT).json(error);
       default:
-        this.logService.saveLog({
+        const logService = new LogService();
+        logService.saveLog({
           type: 'QueryFailedError',
-          detail: 'DenemeDetails',
+          detail: exception['detail'] || '',
           exception,
           req: request,
         });
